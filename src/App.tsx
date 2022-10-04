@@ -1,26 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { FC } from 'react';
+import { TextField, Checkbox } from '@material-ui/core';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import styled from 'styled-components';
+import FormControlUnstyled from '@mui/base/FormControlUnstyled';
+import Container from '@mui/material/Container';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import { DecomposeDiagnose } from 'components/templates/DecomposeDiagnose';
+type Inputs = {
+  name: string;
+  email: string;
+  checkbox: string;
+};
 
-const title = import.meta.env.VITE_APP_TITLE
-console.dir(import.meta.env)
+const inputProps = {
+  step: 300,
+};
 
-function App() {
-  const [count, setCount] = useState(0)
+const title = import.meta.env.VITE_APP_TITLE;
+console.dir(import.meta.env);
+
+const App: FC = () => {
+  const { register, handleSubmit } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const Title = styled.section`
+    text-align: center;
+  `;
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>{title}</h1>
-    </div>
-  )
-}
+    <Container>
+      <Title>{title}</Title>
+      <Container>
+        <DecomposeDiagnose />
+        <DecomposeDiagnose />
+        <DecomposeDiagnose />
+      </Container>
 
-export default App
+      <FormControlUnstyled
+        defaultValue=""
+        required
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <InputLabel>名前</InputLabel>
+        <Input
+          {...register('name', { required: 'Please enter your first name.' })}
+          inputProps={inputProps}
+        />
+
+        <TextField {...register('name', { required: true })} />
+        <TextField {...register('email', { required: true })} />
+        <Checkbox />
+
+        <input type="submit" />
+      </FormControlUnstyled>
+    </Container>
+  );
+};
+
+export default App;
