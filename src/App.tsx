@@ -1,24 +1,33 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+// import Form from './components/Form';
+import { useForm, SubmitHandler,Controller } from "react-hook-form";
+import FormControlUnstyled from '@mui/base/FormControlUnstyled';
+import { TextField, Checkbox, Input  } from "@material-ui/core";
+type Inputs = {
+  name: string,
+  email: string,
+  checkbox: string
+};
+
 import './App.css'
 
 const title = import.meta.env.VITE_APP_TITLE
 console.dir(import.meta.env)
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { register, handleSubmit, formState: { errors }, control } = useForm<Inputs>();
 
+  const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
       <h1>{title}</h1>
+      <FormControlUnstyled defaultValue="" required onSubmit={handleSubmit(onSubmit)}>
+        <TextField  {...register("name", {required: true})}/>
+        <TextField  {...register("email", {required: true})}/>
+        <Checkbox />
+        <input type="submit" />
+      </FormControlUnstyled>
+
     </div>
   )
 }
