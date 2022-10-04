@@ -1,35 +1,62 @@
-import { useState } from 'react'
-// import Form from './components/Form';
-import { useForm, SubmitHandler,Controller } from "react-hook-form";
+import { FC } from 'react';
+import { TextField, Checkbox } from '@material-ui/core';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import styled from 'styled-components';
 import FormControlUnstyled from '@mui/base/FormControlUnstyled';
-import { TextField, Checkbox, Input  } from "@material-ui/core";
+import Container from '@mui/material/Container';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import { DecomposeDiagnose } from 'components/templates/DecomposeDiagnose';
 type Inputs = {
-  name: string,
-  email: string,
-  checkbox: string
+  name: string;
+  email: string;
+  checkbox: string;
 };
 
-import './App.css'
+const inputProps = {
+  step: 300,
+};
 
-const title = import.meta.env.VITE_APP_TITLE
-console.dir(import.meta.env)
+const title = import.meta.env.VITE_APP_TITLE;
+console.dir(import.meta.env);
 
-function App() {
-  const { register, handleSubmit, formState: { errors }, control } = useForm<Inputs>();
+const App: FC = () => {
+  const { register, handleSubmit } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const Title = styled.section`
+    text-align: center;
+  `;
+
   return (
-    <div className="App">
-      <h1>{title}</h1>
-      <FormControlUnstyled defaultValue="" required onSubmit={handleSubmit(onSubmit)}>
-        <TextField  {...register("name", {required: true})}/>
-        <TextField  {...register("email", {required: true})}/>
+    <Container>
+      <Title>{title}</Title>
+      <Container>
+        <DecomposeDiagnose />
+        <DecomposeDiagnose />
+        <DecomposeDiagnose />
+      </Container>
+
+      <FormControlUnstyled
+        defaultValue=""
+        required
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <InputLabel>名前</InputLabel>
+        <Input
+          {...register('name', { required: 'Please enter your first name.' })}
+          inputProps={inputProps}
+        />
+
+        <TextField {...register('name', { required: true })} />
+        <TextField {...register('email', { required: true })} />
         <Checkbox />
+
         <input type="submit" />
       </FormControlUnstyled>
+    </Container>
+  );
+};
 
-    </div>
-  )
-}
-
-export default App
+export default App;
